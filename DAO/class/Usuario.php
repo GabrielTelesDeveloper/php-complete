@@ -48,18 +48,14 @@ class Usuario {
         ));
 
         if (count($result) > 0) {
-            $row = $result[0];
-            $this->setIdcliente($row['idcliente']);
-            $this->setNome($row['nome']);
-            $this->setDataNascimento($row['dataNascimento']);
-            $this->setDataCadastro(new DateTime($row['dataCadastro']));
+            $this->setData($result[0]);
         } else {
             echo "Nenhum dado encontrado, a aplicação irá parar por aqui!";
             die;
         }
     }
 
-    /* Listar todos os usuários de determinada tabela */
+    /* Listar todos os clientes de determinada tabela */
 
     public static function getList() {
         $sql = new Sql();
@@ -82,7 +78,7 @@ class Usuario {
         }
     }
 
-    /* Autenticação de nome e data de nascimento do usuário */
+    /* Autenticação de nome e data de nascimento do cliente */
 
     public function authenticate($nome, $dataNascimento) {
         $sql = new Sql();
@@ -94,14 +90,51 @@ class Usuario {
             $row = $result[0];
 
             /* O método __toString retornará os dados */
-            $this->setIdcliente($row['idcliente']);
-            $this->setNome($row['nome']);
-            $this->setDataNascimento($row['dataNascimento']);
-            $this->setDataCadastro(new DateTime($row['dataCadastro']));
+            $this->setData($result[0]);
         } else {
             echo 'Dados inválidos';
             die;
         }
+    }
+
+    /* Retorna os dados passando os parâmetros da classe */
+
+    public function setData($data) {
+
+        $this->setIdcliente($data['idcliente']);
+        $this->setNome($data['nome']);
+        $this->setDataNascimento($data['dataNascimento']);
+        $this->setDataCadastro(new DateTime($data['dataCadastro']));
+    }
+
+    /* Método para criação de dados */
+
+    public function insert() {
+        $sql = new Sql();
+
+        /* Procedure -> Retorna qual foi o id gerado na tabela */
+        $result = $sql->select("CALL sp_clientes_insert(:NOME, :DATANASCIMENTO)", array(
+            ":NOME" => $this->getNome(),
+            "DATANASCIMENTO" => $this->getDataNascimento()
+        ));
+
+        if (count($result) > 0) {
+            $this->setData($result[0]);
+        }
+    }
+
+    /* Método para alteração de dados */
+
+    public function update($nome, $dataNascimento) {
+
+        $this->setNome($nome);
+        $this->setDataNascimento($dataNascimento);
+        $sql = new Sql();
+        $sql->query("UPDATE tb_cliente SET nome = :NOME, dataNascimento = :DATANASCIMENTO WHERE idcliente = :ID", array(
+            "NOME" => $this->getNome(),
+            "DATANASCIMENTO" => $this->getDataNascimento(),
+            "ID" => $this->getIdcliente()
+        ));
     }
 
     public function __toString() {
