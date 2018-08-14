@@ -3,6 +3,8 @@
 /* DAO - Data Access Object */
 /* Vantagens:Abstração com o banco de dados, Segurança */
 
+/* Entender melhor essa classe */
+
 class Sql extends PDO {
 
     private $conn;
