@@ -137,6 +137,19 @@ class Usuario {
         ));
     }
 
+    public function delete() {
+        $sql = new Sql();
+        $sql->query("DELETE FROM tb_cliente WHERE idcliente = :ID", array(
+            "ID" => $this->getIdcliente()
+        ));
+
+        /* Remover dados do objeto */
+        $this->setIdcliente(0);
+        $this->setNome("");
+        $this->setDataNascimento("");
+        $this->setDataCadastro(new DateTime());
+    }
+
     public function __toString() {
         return json_encode(array(
             "idcliente" => $this->getIdcliente(),

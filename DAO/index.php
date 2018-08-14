@@ -28,8 +28,14 @@ require_once 'config.php';
 //echo $aluno;
 
 /* Altera determinado cliente previamente cadastrado */
-$update = new Usuario();
-$update->loadById(8);
-$update->update("professor", "0000-00-00");
-echo $update;
+//$update = new Usuario();
+//$update->loadById(8);
+//$update->update("professor", "0000-00-00");
+//echo $update;
+
+/* Removendo dados do banco de dados */
+$delete = new Usuario();
+$delete->loadById(10);
+$delete->delete();
+echo $delete;
 ?>
