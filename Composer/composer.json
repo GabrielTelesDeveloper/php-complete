@@ -1,0 +1,9 @@
+{
+    "name": "projetotst/composer",
+    "description": "Projeto destinado a rede de associados do tst",
+    "type": "project",
+    "minimum-stability": "dev",
+    "require": {
+        "monolog/monolog": "1.0.*"
+    }
+}
